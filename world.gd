@@ -2,6 +2,7 @@ extends Node2D
 
 const tile = preload("res://tile.tscn")
 const unit_test = preload("res://units/unit_test.tscn")
+const unit = preload("res://units/unit.tscn")
 const TILE_SIZE = 32
 
 onready var as = AStar.new()
@@ -38,17 +39,30 @@ func _ready():
 					as.connect_points(i,i+1)
 				if map[y][x] == 0 and map[y+1][x] == 0:
 					as.connect_points(i,i+map[0].size())
+				if map[y][x] == 0 and map[y+1][x+1] == 0:
+					as.connect_points(i,i+1+map[0].size())
 			i += 1
 	
 	add_unit_to_id(33)
+	add_unit(66)
 	set_process_input(true)
 	
+
+func add_unit(id):
+	var unit_new = unit.instance()
+	unit_new.set_pos(id_to_px(id))
+	unit_new.set_z(2)
+	fill_cell(id)
+	add_child(unit_new)
 
 func add_unit_to_id(id):
 	var unit_new = unit_test.instance()
 	unit_new.set_pos(id_to_px(id))
 	unit_new.set_z(2)
 	add_child(unit_new)
+	
+func fill_cell(id):
+	pass
 
 func px_to_id(pos):
 	var x = floor(pos.x/TILE_SIZE)
@@ -61,6 +75,12 @@ func id_to_px(id):
 	var x = id % map[0].size()
 	var y = id / map[0].size()
 	return Vector2(x*TILE_SIZE+TILE_SIZE/2,y*TILE_SIZE+TILE_SIZE/2)
+	
+func id_to_cell(id):
+	id = int(id)
+	var x = id % map[0].size()
+	var y = id / map[0].size()
+	return Vector2(x,y)
 	
 func _input(event):
 	if event.type == InputEvent.MOUSE_BUTTON && event.button_index == 1 && event.pressed && not event.is_echo():

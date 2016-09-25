@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=1]
+
+[ext_resource path="res://units/unit.gd" type="Script" id=1]
+[ext_resource path="res://units/unit_default.png" type="Texture" id=2]
+
+[sub_resource type="SpriteFrames" id=1]
+
+animations = [ { "frames":[ ExtResource( 2 ) ], "loop":true, "name":"default", "speed":5.0 } ]
+
+[node name="unit" type="KinematicBody2D"]
+
+input/pickable = false
+collision/layers = 1
+collision/mask = 1
+collision/margin = 0.08
+script/script = ExtResource( 1 )
+health = 100
+walking_speed = 0
+attack_mode = 0
+flag = true
+selectable = true
+multi_select = false
+size = 1
+
+[node name="sprites" type="AnimatedSprite" parent="."]
+
+frames = SubResource( 1 )
+animation = "default"
+
+
